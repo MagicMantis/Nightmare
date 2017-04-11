@@ -1,0 +1,146 @@
+<?xml version = "1.0"?>
+<GameData>
+<!-- screenTitle is also used to identify you and your animation. 
+     So make sure to include your name as part of the screenTitle -->
+<screenTitle>Star Animation</screenTitle>
+<maxStringSize>50</maxStringSize>
+<nameWidth>150</nameWidth>
+<titleWidth>110</titleWidth>
+<makeVideo>false</makeVideo>
+
+<frameCapOn>true</frameCapOn>
+<frameMax>100</frameMax>
+<period>17</period>
+
+<maxFrames>1200</maxFrames>
+<username>jsavold</username>
+
+<gravityConstant>14.0</gravityConstant>
+<dampingConstant>0.10</dampingConstant>
+<maxSpeed>400.0</maxSpeed>
+
+<view>
+  <width>854</width>
+  <height>480</height>
+</view>
+
+<grid>
+  <width>32</width>
+  <height>32</height>
+</grid>
+
+<world>
+  <width>10000</width>
+  <height>480</height>
+  <ground>430</ground>
+</world>
+
+<groundHeight>20.0</groundHeight>
+<sludgeCount>500</sludgeCount>
+
+<rain>
+  <count>250</count>
+  <speed>100</speed>
+</rain>
+
+<HUD>
+  <x>0</x>
+  <y>0</y>
+  <width>200</width>
+  <height>200</height>
+</HUD>
+
+<farbuildings>
+  <file>images/bkgnd.png</file>
+  <factor>50</factor>
+  <transparency>false</transparency>
+</farbuildings>
+
+<backbuildings>
+  <file>images/back-buildings3.png</file>
+  <factor>2</factor>
+  <transparency>false</transparency>
+</backbuildings>
+
+<foreground>
+  <file>images/foreground3.png</file>
+  <factor>1</factor>
+  <transparency>false</transparency>
+</foreground>
+
+<font name="font">
+  <file>fonts/arial.ttf</file>
+  <size>24</size>
+  <red>255</red>
+  <green>255</green>
+  <blue>255</blue>
+  <alpha>0</alpha>
+</font>
+
+<spinstar>
+  <file>images/spinstar.png</file>
+  <startLoc x="120" y="140"/>
+  <frames>4</frames>
+  <frameInterval>20</frameInterval>
+  <speedX>-200</speedX>
+  <speedY>200</speedY>
+  <transparency>true</transparency>
+</spinstar>
+
+<player>
+  <file>images/running.png</file>
+  <startLoc x="120" y="300"/>
+  <frames>12</frames>
+  <frameWidth>55</frameWidth>
+  <frameHeight>76</frameHeight>
+  <frameInterval>60</frameInterval>
+  <speedX>0</speedX>
+  <speedY>0</speedY>
+  <jumpPower>400.0</jumpPower>
+  <transparency>true</transparency>
+  <acceleration>15.0</acceleration>
+  <deceleration>50.0</deceleration>
+  <maxSpeed>300.0</maxSpeed>
+  <width> 0.0 </width>
+  <height> 0.0 </height>
+</player>
+
+<star>
+  <file>images/yellowstar32.png</file>
+  <startLoc x="10" y="10"/>
+  <speedX>-175</speedX>
+  <speedY>-175</speedY>
+  <transparency>true</transparency>
+</star>
+
+<sludge>
+  <file>images/sludge.png</file>
+  <transparency>true</transparency>
+  <radius>12.0</radius>
+  <deviation>1.0</deviation>
+  <seekSpeed>10.0</seekSpeed>
+  <width>32</width>
+  <height>32</height>
+</sludge>
+
+<smog>
+  <file>images/smog.png</file>
+  <frames>4</frames>
+  <speedX>30</speedX>
+  <speedY>0</speedY>
+  <startLoc x="0" y="0"/>
+  <frameInterval>120</frameInterval>
+  <transparency>true</transparency>
+  <width> 0.0 </width>
+  <height> 0.0 </height>
+</smog>
+
+<greenorb>
+  <file>images/greenball.bmp</file>
+  <startLoc x="320" y="240"/>
+  <speedX>175</speedX>
+  <speedY>175</speedY>
+  <transparency>true</transparency>
+</greenorb>
+
+</GameData>
