@@ -1,6 +1,7 @@
 #include <sstream>
 #include "viewport.h"
 #include "ioMod.h"
+#include "renderContext.h"
 
 Viewport& Viewport::getInstance() {
   static Viewport viewport;
@@ -17,6 +18,7 @@ Viewport::Viewport() :
   objWidth(0), objHeight(0),
   rd(), mt(rd()),
   jitterScale(0.0),
+  fade(0.0),
   objectToTrack(NULL)
 {}
 
@@ -29,6 +31,13 @@ void Viewport::setObjectToTrack(const Drawable *obj) {
 void Viewport::draw() const {
   IOmod& io = IOmod::getInstance();
   //io.writeText("Tracking "+objectToTrack->getName(), 30, 30);
+
+  SDL_Renderer* rend = RenderContext::getInstance()->getRenderer();
+  SDL_SetRenderDrawColor(rend,0,0,0,(int)(255*(fade/10)));
+  SDL_Rect rect = {0,0,
+    Gamedata::getInstance().getXmlInt("view/width"),
+    Gamedata::getInstance().getXmlInt("view/height")};
+  SDL_RenderFillRect(rend, &rect);
 
   int nameWidth = gdata.getXmlInt("nameWidth");
   int titleWidth = gdata.getXmlInt("titleWidth");

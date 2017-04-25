@@ -100,12 +100,14 @@ void Clock::startClock() {
   timeAtPause = timeAtStart = SDL_GetTicks(); 
   prevTicks = 0;
 }
+
 void Clock::pause() {
   if( started && !paused ) {
     timeAtPause = SDL_GetTicks() - timeAtStart;
     paused = true;
   }
 }
+
 void Clock::unpause() {
   if( started && paused ) {
     timeAtStart = SDL_GetTicks() - timeAtPause;

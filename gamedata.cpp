@@ -87,7 +87,7 @@ void Gamedata::displayData() const {
 
 // helper function
 float Gamedata::clamp(const float val, const float low, const float high) {
-  int result = val;
+  float result = val;
   if (result < low) result = low; 
   if (result > high) result = high;
   return result;

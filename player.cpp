@@ -3,11 +3,18 @@
 #include "viewport.h"
 #include "objectManager.h"
 #include "sludge.h"
+#include <algorithm>
 
-Player::Player(const std::string& name) : TwoWayMultiSprite(name), fear(0.0) 
+Player::Player(const std::string& name) : 
+	TwoWayMultiSprite(name), 
+	fear(0.0),
+	observers()
 { }
 
-Player::Player(const Player& p) : TwoWayMultiSprite(p.getName()), fear(0.0)
+Player::Player(const Player& p) : 
+	TwoWayMultiSprite(p.getName()),
+	fear(0.0),
+	observers(p.observers)
 { }
 
 // helper function
@@ -42,7 +49,7 @@ void Player::update(Uint32 ticks) {
 	else if (getVelocityX() < 0) decelerate(decel);
 
 	//cause screen jitter from fear
-	for (int xx = -1; xx <= 1; xx++) {
+	/*for (int xx = -1; xx <= 1; xx++) {
 		for (int yy = -1; yy <= 1; yy++) {
 			auto* objs = ObjectManager::getInstance().getObjectsInGrid(getGridX()+xx, getGridY()+yy);
 			if (objs) {
@@ -58,18 +65,41 @@ void Player::update(Uint32 ticks) {
 				}
 			}
 		}
-	}
-	fear -= 0.001;
-	fear = Gamedata::clamp(fear, 0.0, 3.0);
+	}*/
+
+	notifyObservers();
+	
+	fear += 0.005 * observers.size();
+	fear -= 0.02;
+	fear = Gamedata::clamp(fear, 0.0, 10.0);
 	Viewport::getInstance().setJitter(fear);
+	Viewport::getInstance().setFade(fear);
 }
 
 void Player::draw() const {
 	TwoWayMultiSprite::draw();
 }
 
+void Player::attach(Sludge* s) {
+	if (s->getState() == 0)
+		observers.push_back(s);
+}
+
+void Player::detach(Sludge* s) {
+	if (s->getState() == 1)
+		observers.remove(s);
+}
+
+void Player::notifyObservers() {
+	for (Sludge* s : observers) {
+		s->notify(getPosition());
+	}
+}
+
 void Player::accelerate(float amount) {
-	setVelocityX(getVelocityX() + amount);
+	int attached = std::min(50, (int)observers.size());
+	float mod = ((50.0 - attached) / 50.0);
+	setVelocityX(getVelocityX() + (amount*mod));
 	float maxSpeed = Gamedata::getInstance().getXmlFloat("player/maxSpeed");
 	setVelocityX(Gamedata::clamp(getVelocityX(), -maxSpeed, maxSpeed));
 }
@@ -86,7 +116,9 @@ void Player::decelerate(float amount) {
 void Player::jump() {
 	if (!onGround()) return;
 	float jumpPower = Gamedata::getInstance().getXmlFloat("player/jumpPower");
-	setVelocityY(-jumpPower);
+	int attached = std::min(50, (int)observers.size());
+	float mod = ((50.0 - attached) / 50.0);
+	setVelocityY(-(jumpPower*mod));
 }
 
 void Player::stop() {

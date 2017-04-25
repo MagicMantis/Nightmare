@@ -12,7 +12,10 @@ Sludge::Sludge() : Sprite("sludge", Vector2f(
 	player(nullptr),
 	gravity(Gamedata::getInstance().getXmlFloat("gravityConstant")),
 	damping(Gamedata::getInstance().getXmlFloat("dampingConstant")),
-	maxSpeed(Gamedata::getInstance().getXmlFloat("maxSpeed"))
+	maxSpeed(Gamedata::getInstance().getXmlFloat("maxSpeed")),
+	state(0),
+	playerPos(),
+	xoffset(0), yoffset(0), grip(0)
 { }
 
 Sludge::Sludge(const Vector2f& pos, float r) : Sprite("sludge", pos, 
@@ -21,7 +24,10 @@ Sludge::Sludge(const Vector2f& pos, float r) : Sprite("sludge", pos,
 	player(nullptr),
 	gravity(Gamedata::getInstance().getXmlFloat("gravityConstant")),
 	damping(Gamedata::getInstance().getXmlFloat("dampingConstant")),
-	maxSpeed(Gamedata::getInstance().getXmlFloat("maxSpeed")) 
+	maxSpeed(Gamedata::getInstance().getXmlFloat("maxSpeed")), 
+	state(0),
+	playerPos(),
+	xoffset(0), yoffset(0), grip(0)
 { }
 
 // void Sludge::draw() const {
@@ -34,43 +40,68 @@ void Sludge::update(Uint32 ticks) {
 	Vector2f incr = getVelocity() * static_cast<float>(ticks) * 0.001;
 	setPosition(getPosition() + incr);
 
-	//calculate change in velocity this tick
-	Vector2f accel;
+	//free move
+	if (state == 0) {
+		//calculate change in velocity this tick
+		Vector2f accel;
 
-	//gravity
-	float vspeed = getVelocityY();
-	if (vspeed < 200.0) accel[1] += gravity;
+		//gravity
+		float vspeed = getVelocityY();
+		if (vspeed < 200.0) accel[1] += gravity;
 
-	//floor bounce
-	if (getY()-getFrameHeight()/2 > (Gamedata::getInstance().getXmlInt("world/ground"))) {
-		float normalForce = (1.0)*pow((getY()-(getWorldHeight()-100)),2);
-		accel[1] -= normalForce/5.0;
-		setY(Gamedata::getInstance().getXmlInt("world/ground")+getFrameHeight()/2);
+		//floor bounce
+		if (getY()-getFrameHeight()/2 > (Gamedata::getInstance().getXmlInt("world/ground"))) {
+			float normalForce = (1.0)*pow((getY()-(getWorldHeight()-100)),2);
+			accel[1] -= normalForce/5.0;
+			setY(Gamedata::getInstance().getXmlInt("world/ground")+getFrameHeight()/2);
+		}
+
+		//bounce off other sludges
+		accel = accel + bounce(gravity);
+
+		//seek target
+		if (!player) player = (Player *)ObjectManager::getInstance().getObject("player");
+		Vector2f target = player->getPosition();
+		//target[0] = Gamedata::getInstance().getMouseX() + Viewport::getInstance().getX();
+		//target[1] = Gamedata::getInstance().getMouseY() + Viewport::getInstance().getY();
+		target[0] += 16;
+		target[1] += 32;
+		float dist = getDistance(target);
+		float xratio = (getX()-target[0]) / dist;
+		float yratio = (getY()-target[1]) / dist;
+		accel[0] -= Gamedata::getInstance().getXmlFloat("sludge/seekSpeed") * xratio * 2;
+		accel[1] -= Gamedata::getInstance().getXmlFloat("sludge/seekSpeed") * yratio;
+
+		if (dist < getRadius()) {
+			player->attach(this);
+			xoffset = getX()-target[0]+16;
+			yoffset = getY()-target[1]+32;
+			state = 1;
+			grip = 10000;
+		}
+
+		//damping
+		accel = accel - (damping * getVelocity());
+
+		incr = accel * static_cast<float>(ticks) * .02;
+		setVelocity(getVelocity() + incr);
+		setVelocityX(Gamedata::clamp(getVelocityX(), -maxSpeed, maxSpeed));
+		setVelocityY(Gamedata::clamp(getVelocityY(), -maxSpeed, maxSpeed));
 	}
+	else if (state == 1) {
+		int diff = getDistance(playerPos);
+		setX(playerPos[0]+xoffset);
+		setY(playerPos[1]+yoffset);
+		grip -= diff;
 
-	//bounce off other sludges
-	accel = accel + bounce(gravity);
-
-	//seek target
-	if (!player) player = (Player *)ObjectManager::getInstance().getObject("player");
-	Vector2f target = player->getPosition();
-	//target[0] = Gamedata::getInstance().getMouseX() + Viewport::getInstance().getX();
-	//target[1] = Gamedata::getInstance().getMouseY() + Viewport::getInstance().getY();
-	target[0] += 32;
-	target[1] += 32;
-	float dist = getDistance(target);
-	float xratio = (getX()-target[0]) / dist;
-	float yratio = (getY()-target[1]) / dist;
-	accel[0] -= Gamedata::getInstance().getXmlFloat("sludge/seekSpeed") * xratio * 2;
-	accel[1] -= Gamedata::getInstance().getXmlFloat("sludge/seekSpeed") * yratio;
-
-	//damping
-	accel = accel - (damping * getVelocity());
-
-	incr = accel * static_cast<float>(ticks) * .02;
-	setVelocity(getVelocity() + incr);
-	setVelocityX(Gamedata::clamp(getVelocityX(), -maxSpeed, maxSpeed));
-	setVelocityY(Gamedata::clamp(getVelocityY(), -maxSpeed, maxSpeed));
+		if (grip <= 0) {
+			player->detach(this);
+			state = 0;
+			grip = 0;
+			xoffset = 0;
+			yoffset = 0;
+		}
+	}
 }
 
 //Bounce off other sludges
@@ -98,4 +129,8 @@ Vector2f Sludge::bounce(float gravityConstant) {
 		}
 	}
 	return accel;
+}
+
+void Sludge::notify(const Vector2f& location) {
+	playerPos = location;
 }

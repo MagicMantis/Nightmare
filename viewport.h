@@ -20,6 +20,9 @@ public:
   float getJitter() const { return jitterScale; }
   void setJitter(float j) { jitterScale = j; }
 
+  float getFade() const { return fade; }
+  void setFade(float j) { fade = j; }
+
   void setObjectToTrack(const Drawable *obj);
   const Drawable* getObjectToTrack() const { return objectToTrack; } 
 
@@ -35,6 +38,7 @@ private:
   std::random_device rd;
   std::mt19937 mt;
   float jitterScale;
+  float fade;
   
   const Drawable *objectToTrack;
 
