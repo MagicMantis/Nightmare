@@ -131,6 +131,21 @@ Vector2f Sludge::bounce(float gravityConstant) {
 	return accel;
 }
 
+void Sludge::blast(const Vector2f& origin) {
+	//detach from player
+	player->detach(this);
+	state = 0;
+	grip = 0;
+	xoffset = 0;
+	yoffset = 0;
+
+	//fly from blast origin
+	float dist = getDistance(origin);
+	float xratio = (getX()-origin[0]) / dist;
+	float yratio = (getY()-origin[1]) / dist;
+	setVelocity(Vector2f(xratio*1000, yratio*1000));
+}
+
 void Sludge::notify(const Vector2f& location) {
 	playerPos = location;
 }

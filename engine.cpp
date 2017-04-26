@@ -101,6 +101,10 @@ void Engine::play() {
             p = (Player*) ObjectManager::getInstance().getObject("player");
             p->jump();
             break;
+          case SDLK_SPACE:
+            p = (Player*) ObjectManager::getInstance().getObject("player");
+            p->makeShield();
+            break;
           case SDLK_DOWN:
             p = (Player*) ObjectManager::getInstance().getObject("player");
             p->stop();

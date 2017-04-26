@@ -123,6 +123,14 @@
   <height>32</height>
 </sludge>
 
+<shield>
+  <file>images/shield.png</file>
+  <transparency>true</transparency>
+  <width>128</width>
+  <height>128</height>
+  <radius>64</radius>
+</shield>
+
 <pool>
   <file>images/pool.png</file>
   <frames>4</frames>

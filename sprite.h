@@ -19,6 +19,8 @@ protected:
   int getWorldHeight() const { return worldHeight; }
   int getFrameWidth() const { return frameWidth; }
   int getFrameHeight() const { return frameHeight; }
+  float getScale() const { return scale; }
+  void setScale(float s) { scale = s; }
 private:
   const Frame * frame;
   int worldWidth;

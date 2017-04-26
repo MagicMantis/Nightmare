@@ -21,6 +21,7 @@ public:
 
 	// void draw() const;
 	void update(Uint32 ticks);
+	void blast(const Vector2f&);
 private:
 	float radius;
 	Player* player;

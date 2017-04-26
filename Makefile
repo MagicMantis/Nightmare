@@ -27,6 +27,7 @@ OBJS = \
 	pool.o \
 	smog.o \
 	player.o \
+	shield.o \
 	rain.o \
 	clock.o \
 	engine.o \

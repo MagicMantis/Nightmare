@@ -9,13 +9,17 @@ Player::Player(const std::string& name) :
 	TwoWayMultiSprite(name), 
 	fear(0.0),
 	jumps(1),
+	shieldCooldown(0),
+	shield(nullptr),
 	observers()
 { }
 
 Player::Player(const Player& p) : 
 	TwoWayMultiSprite(p.getName()),
-	fear(0.0),
-	jumps(1),
+	fear(p.fear),
+	jumps(p.jumps),
+	shieldCooldown(p.shieldCooldown),
+	shield(p.shield),
 	observers(p.observers)
 { }
 
@@ -69,6 +73,12 @@ void Player::update(Uint32 ticks) {
 		}
 	}*/
 
+	if (shield) shield->update(ticks);
+	else {
+		shieldCooldown -= ticks;
+		if (shieldCooldown < 0) shieldCooldown = 0;
+	}
+
 	notifyObservers();
 	
 	fear += 0.005 * observers.size();
@@ -80,6 +90,7 @@ void Player::update(Uint32 ticks) {
 
 void Player::draw() const {
 	TwoWayMultiSprite::draw();
+	if (shield) shield->draw();
 }
 
 void Player::attach(Sludge* s) {
@@ -138,4 +149,18 @@ bool Player::onGround() {
 	}
 	if (getY()+frameHeight/2 == groundLocation) return true;
 	return false;
+}
+
+void Player::makeShield() {
+	if (!shield && shieldCooldown == 0) {
+		shield = new Shield(this);
+		shieldCooldown = 1200;
+	}
+}
+
+void Player::popShield() {
+	if (shield) { 
+		delete shield;
+		shield = nullptr;
+	}
 }
