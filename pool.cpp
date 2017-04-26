@@ -2,7 +2,7 @@
 
 Pool::Pool(const Vector2f& pos) : 
 	MultiSprite("pool"), 
-	spawning(false), 
+	spawning(true), 
 	spawnTimer(0),
 	sludgeList(),
 	freeList()
@@ -16,7 +16,11 @@ Pool::Pool(const Pool& p) :
 	freeList(p.freeList)
 { }
 
-void Pool::draw() {
+Pool::~Pool() {
+	
+}
+
+void Pool::draw() const {
 	MultiSprite::draw();
 	for (Sludge* s : sludgeList) {
 		s->draw();
@@ -24,9 +28,12 @@ void Pool::draw() {
 }
 
 void Pool::update(Uint32 ticks) {
+	MultiSprite::update(ticks);
+
 	if (spawning) {
 		if (spawnTimer <= 0) {
 			spawnSludge();
+			spawnTimer = 1200;
 		}
 	}
 
@@ -40,13 +47,19 @@ void Pool::update(Uint32 ticks) {
 
 void Pool::spawnSludge() {
 	if (freeList.empty()) {
-		Sludge* s = new Sludge(getPosition(), Gamedata::getInstance().getXmlInt("sludge/radius"));
+		Vector2f spawnLoc = getPosition();
+		spawnLoc[0] += (frameWidth / 2) + Gamedata::getInstance().getRandInRange(-30,30);
+		spawnLoc[1] += (frameHeight / 2) + Gamedata::getInstance().getRandInRange(-20,0);
+		Sludge* s = new Sludge(spawnLoc, Gamedata::getInstance().getXmlInt("sludge/radius"));
 		sludgeList.push_back(s);
 	}
 	else {
 		Sludge* s = freeList.front();
 		freeList.pop_front();
-		s->setPosition(getPosition());
+		Vector2f spawnLoc = getPosition();
+		spawnLoc[0] += (frameWidth / 2) + Gamedata::getInstance().getRandInRange(-30,30);
+		spawnLoc[1] += (frameHeight / 2) + Gamedata::getInstance().getRandInRange(-20,0);
+		s->setPosition(spawnLoc);
 		s->setState(0);
 		sludgeList.push_back(s);
 	}

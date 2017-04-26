@@ -18,13 +18,14 @@ ObjectManager& ObjectManager::getInstance() {
 }
 
 void ObjectManager::initObjects() {
+	//add player
 	addObject( new Player("player") );
 
 	//add pool
 	Vector2f loc;
-	loc[0] = 200;
-	loc[1] = 350;
-	//addObject( new Pool(loc) );
+	loc[0] = 1200;
+	loc[1] = 420;
+	addObject( new Pool(loc) );
 
 	//generate rain effects
 	int rainCount = Gamedata::getInstance().getXmlInt("rain/count");

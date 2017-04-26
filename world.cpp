@@ -17,7 +17,7 @@ void World::update() {
 }
 
 void World::draw() const { 
-  frame->draw(0,0,-viewX,-viewY);
-  frame->draw(0,0,frameWidth-viewX,-viewY);
+  frame->draw_ext(0,0,-viewX,-viewY);
+  frame->draw_ext(0,0,frameWidth-viewX,-viewY);
 }
 

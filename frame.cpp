@@ -40,7 +40,7 @@ void Frame::draw(int x, int y, bool doFlip, float scale) const {
   SDL_RenderCopyEx(renderer, texture, NULL, &dest, 0, NULL, flip);
 }
 
-void Frame::draw(int sx, int sy, int dx, int dy) const {
+void Frame::draw_ext(int sx, int sy, int dx, int dy) const {
   SDL_Rect src = { sx, sy, rect.w, rect.h };    
   SDL_Rect dst = { dx, dy, rect.w, rect.h };
   SDL_RenderCopy(renderer, texture, &src, &dst);

@@ -16,7 +16,7 @@ public:
   void draw(int x, int y) const;
   void draw(int x, int y, bool) const;
   void draw(int x, int y, bool, float) const;
-  void draw(int sx, int sy, int dx, int dy) const;
+  void draw_ext(int sx, int sy, int dx, int dy) const;
 
   SDL_Texture* getTexture() const { return texture; }
   inline int getWidth()  const { return rect.w; }

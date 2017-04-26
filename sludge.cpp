@@ -77,7 +77,7 @@ void Sludge::update(Uint32 ticks) {
 			xoffset = getX()-target[0]+16;
 			yoffset = getY()-target[1]+32;
 			state = 1;
-			grip = 10000;
+			grip = 3000;
 		}
 
 		//damping

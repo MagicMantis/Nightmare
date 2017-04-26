@@ -26,6 +26,7 @@ public:
 private:
 	bool onGround();
 	float fear;
+	int jumps;
 
 	std::list<Sludge*> observers;
 };

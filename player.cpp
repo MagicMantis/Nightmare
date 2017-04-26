@@ -8,12 +8,14 @@
 Player::Player(const std::string& name) : 
 	TwoWayMultiSprite(name), 
 	fear(0.0),
+	jumps(1),
 	observers()
 { }
 
 Player::Player(const Player& p) : 
 	TwoWayMultiSprite(p.getName()),
 	fear(0.0),
+	jumps(1),
 	observers(p.observers)
 { }
 
@@ -114,7 +116,9 @@ void Player::decelerate(float amount) {
 }
 
 void Player::jump() {
-	if (!onGround()) return;
+	if (!onGround() && jumps == 0) return;
+	if (!onGround()) jumps--;
+	else jumps = 1;
 	float jumpPower = Gamedata::getInstance().getXmlFloat("player/jumpPower");
 	int attached = std::min(50, (int)observers.size());
 	float mod = ((50.0 - attached) / 50.0);

@@ -36,7 +36,7 @@
 </world>
 
 <groundHeight>20.0</groundHeight>
-<sludgeCount>500</sludgeCount>
+<sludgeCount>0</sludgeCount>
 
 <rain>
   <count>250</count>
@@ -89,7 +89,7 @@
 
 <player>
   <file>images/running.png</file>
-  <startLoc x="120" y="300"/>
+  <startLoc x="700" y="300"/>
   <frames>12</frames>
   <frameWidth>55</frameWidth>
   <frameHeight>76</frameHeight>
@@ -127,7 +127,7 @@
   <file>images/pool.png</file>
   <frames>4</frames>
   <transparency>false</transparency>
-  <frameInterval>30</frameInterval>
+  <frameInterval>120</frameInterval>
   <width>128</width>
   <height>128</height>
   <speedX>0</speedX>

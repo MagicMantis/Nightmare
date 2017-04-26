@@ -38,7 +38,8 @@ Engine::Engine() :
 {
   ObjectManager::getInstance().initObjects();
   //sprites.push_back( new Sludge() );
-  switchSprite();
+  //switchSprite();
+  Viewport::getInstance().setObjectToTrack(ObjectManager::getInstance().getObject("player"));
   std::cout << "Loading complete" << std::endl;
   hud.display(3000);
 }

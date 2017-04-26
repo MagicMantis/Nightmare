@@ -5,8 +5,9 @@ class Pool : public MultiSprite {
 public:
 	Pool(const Vector2f&);
 	Pool(const Pool&);
+	~Pool();
 
-	void draw();
+	void draw() const;
 	void update(Uint32 ticks);
 
 	void setSpawning(bool s) { spawning = s; }
