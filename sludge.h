@@ -17,6 +17,7 @@ public:
 
 	float getRadius() const { return radius; }
 	int getState() const { return state; }
+	void setState(int s) { state = s; }
 
 	// void draw() const;
 	void update(Uint32 ticks);

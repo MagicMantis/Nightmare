@@ -7,6 +7,7 @@
 #include "smog.h"
 #include "player.h"
 #include "rain.h"
+#include "pool.h"
 #include "gamedata.h"
 
 ObjectManager& ObjectManager::getInstance() {
@@ -18,6 +19,12 @@ ObjectManager& ObjectManager::getInstance() {
 
 void ObjectManager::initObjects() {
 	addObject( new Player("player") );
+
+	//add pool
+	Vector2f loc;
+	loc[0] = 200;
+	loc[1] = 350;
+	//addObject( new Pool(loc) );
 
 	//generate rain effects
 	int rainCount = Gamedata::getInstance().getXmlInt("rain/count");

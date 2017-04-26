@@ -24,6 +24,7 @@ OBJS = \
 	twoWayMultiSprite.o \
 	vector2f.o \
 	sludge.o \
+	pool.o \
 	smog.o \
 	player.o \
 	rain.o \

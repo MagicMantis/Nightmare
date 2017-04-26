@@ -54,7 +54,7 @@ Sprite& Sprite::operator=(const Sprite& rhs) {
 }
 
 void Sprite::draw() const { 
-  frame->drawScaled(getX(), getY(), false, scale); 
+  frame->draw(getX(), getY(), false, scale); 
 }
 
 void Sprite::update(Uint32 ticks) { 

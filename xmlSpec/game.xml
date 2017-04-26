@@ -123,6 +123,18 @@
   <height>32</height>
 </sludge>
 
+<pool>
+  <file>images/pool.png</file>
+  <frames>4</frames>
+  <transparency>false</transparency>
+  <frameInterval>30</frameInterval>
+  <width>128</width>
+  <height>128</height>
+  <speedX>0</speedX>
+  <speedY>0</speedY>
+  <startLoc x="0" y="0"/>
+</pool>
+
 <smog>
   <file>images/smog.png</file>
   <frames>4</frames>
