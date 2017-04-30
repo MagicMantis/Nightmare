@@ -149,3 +149,11 @@ void Sludge::blast(const Vector2f& origin) {
 void Sludge::notify(const Vector2f& location) {
 	playerPos = location;
 }
+
+void Sludge::reset() {
+	player->detach(this);
+	state = 0;
+	grip = 0;
+	xoffset = 0;
+	yoffset = 0;
+}

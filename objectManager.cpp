@@ -123,14 +123,16 @@ void ObjectManager::updateObjects(Uint32 ticks) {
 	while (removeList.size() > 0) {	
 		Collider *obj = dynamic_cast<Collider*>(removeList.front());
 		gameObjects.erase(std::remove(gameObjects.begin(), gameObjects.end(), obj));
-		std::cout << " ID: " << obj->getID() << " Before " << gameObjects.size() << " After ";
 		std::vector<Drawable*> *is = instanceSets[obj->getName()];
 		is->erase(std::remove(is->begin(), is->end(), obj));
-		std::cout << gameObjects.size() << std::endl;
 		if (obj && obj->getGridX() >= 0 && obj->getGridX() < gridXs && obj->getGridY() >= 0 && obj->getGridY() < gridYs)
 			grid[(int) (obj->getGridX()*gridYs+obj->getGridY())].remove(obj);
 		removeList.pop_front();
-		delete obj;
+		Sludge *s = dynamic_cast<Sludge*>(obj);
+		if (s) {
+			s->reset();
+			freeList.push_back(s);	
+		}
 	}
 }
 

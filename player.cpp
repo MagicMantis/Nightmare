@@ -113,7 +113,7 @@ void Player::notifyObservers() {
 void Player::accelerate(float amount) {
 	float mod = ((10.0 - fear) / 10.0);
 	setVelocityX(getVelocityX() + (amount*mod));
-	float maxSpeed = Gamedata::getInstance().getXmlFloat("player/maxSpeed");
+	float maxSpeed = Gamedata::getInstance().getXmlFloat("player/maxSpeed") * mod;
 	setVelocityX(Gamedata::clamp(getVelocityX(), -maxSpeed, maxSpeed));
 }
 
