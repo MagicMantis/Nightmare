@@ -30,13 +30,13 @@
 </grid>
 
 <world>
-  <width>10000</width>
+  <width>6000</width>
   <height>480</height>
   <ground>430</ground>
 </world>
 
 <groundHeight>20.0</groundHeight>
-<sludgeCount>0</sludgeCount>
+<sludgeCount>100</sludgeCount>
 
 <rain>
   <count>250</count>
@@ -96,7 +96,7 @@
   <frameInterval>60</frameInterval>
   <speedX>0</speedX>
   <speedY>0</speedY>
-  <jumpPower>400.0</jumpPower>
+  <jumpPower>350.0</jumpPower>
   <transparency>true</transparency>
   <acceleration>15.0</acceleration>
   <deceleration>50.0</deceleration>
@@ -121,6 +121,10 @@
   <seekSpeed>10.0</seekSpeed>
   <width>32</width>
   <height>32</height>
+  <chunk>
+    <size>9</size>
+    <distance>100</distance>
+  </chunk>
 </sludge>
 
 <shield>

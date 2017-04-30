@@ -114,10 +114,12 @@ void Engine::play() {
             else clock.pause();
             break;
           case SDLK_s:
-            clock.toggleSloMo();
+            //clock.toggleSloMo();
             break;
           case SDLK_t:
             switchSprite();
+            break;
+          case SDLK_e:
             break;
           case SDLK_F1:
             if (hud.getTime() == 0) hud.display(1000000);
@@ -129,7 +131,7 @@ void Engine::play() {
               makeVideo = true;
             } else if (makeVideo) {
               std::cout << "Terminating frame capture " << std::endl;
-              makeVideo = false;
+              //makeVideo = false;
             }
             break;
           default:

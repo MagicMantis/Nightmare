@@ -22,6 +22,8 @@ OBJS = \
 	sprite.o \
 	multisprite.o \
 	twoWayMultiSprite.o \
+	explodingSprite.o \
+	chunk.o \
 	vector2f.o \
 	sludge.o \
 	pool.o \

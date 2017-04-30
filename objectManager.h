@@ -19,6 +19,7 @@ public:
 	~ObjectManager();
 
 	void addObject(Drawable*);
+	void removeObject(Drawable*);
 	void initObjects(); //generate all objects in the scene
 	void updateObjects(Uint32 ticks); //update all objects
 	void drawObjects() const; //draw all objects
@@ -35,6 +36,7 @@ private:
 	ObjectManager(int w, int h);
 	std::vector<Drawable*> gameObjects;
 	std::unordered_map<std::string, std::vector<Drawable*>*> instanceSets;
+	std::list<Drawable*> removeList;
 	int gridXs, gridYs;
 	std::list<Collider*> *grid;
 	int gridWidth, gridHeight;

@@ -2,6 +2,8 @@
 #include "sprite.h"
 #include "gamedata.h"
 #include "renderContext.h"
+#include "objectManager.h"
+#include "explodingSprite.h"
 
 Sprite::Sprite(const std::string& name) :
   Collider(name,
@@ -74,4 +76,10 @@ void Sprite::update(Uint32 ticks) {
   if ( getX() > worldWidth-frameWidth) {
     setVelocityX( -std::abs( getVelocityX() ) );
   }  
+}
+
+void Sprite::explode() {
+  Drawable *boom = new ExplodingSprite(*static_cast<Sprite*>(this));
+  ObjectManager::getInstance().addObject(boom);
+  ObjectManager::getInstance().removeObject(this);
 }

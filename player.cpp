@@ -82,7 +82,8 @@ void Player::update(Uint32 ticks) {
 	notifyObservers();
 	
 	fear += 0.005 * observers.size();
-	fear -= 0.02;
+	fear -= .01;
+	if (shield) fear -= .3;
 	fear = Gamedata::clamp(fear, 0.0, 10.0);
 	Viewport::getInstance().setJitter(fear);
 	Viewport::getInstance().setFade(fear);
@@ -110,8 +111,7 @@ void Player::notifyObservers() {
 }
 
 void Player::accelerate(float amount) {
-	int attached = std::min(50, (int)observers.size());
-	float mod = ((50.0 - attached) / 50.0);
+	float mod = ((10.0 - fear) / 10.0);
 	setVelocityX(getVelocityX() + (amount*mod));
 	float maxSpeed = Gamedata::getInstance().getXmlFloat("player/maxSpeed");
 	setVelocityX(Gamedata::clamp(getVelocityX(), -maxSpeed, maxSpeed));
@@ -131,8 +131,7 @@ void Player::jump() {
 	if (!onGround()) jumps--;
 	else jumps = 1;
 	float jumpPower = Gamedata::getInstance().getXmlFloat("player/jumpPower");
-	int attached = std::min(50, (int)observers.size());
-	float mod = ((50.0 - attached) / 50.0);
+	float mod = ((10.0 - fear) / 10.0);
 	setVelocityY(-(jumpPower*mod));
 }
 

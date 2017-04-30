@@ -23,8 +23,10 @@ void ObjectManager::initObjects() {
 
 	//add pool
 	Vector2f loc;
-	loc[0] = 1200;
+	loc[0] = 1600;
 	loc[1] = 420;
+	addObject( new Pool(loc) );
+	loc[0] = 2300;
 	addObject( new Pool(loc) );
 
 	//generate rain effects
@@ -97,6 +99,10 @@ void ObjectManager::addObject(Drawable* obj) {
     }
 }
 
+void ObjectManager::removeObject(Drawable* obj) {
+	removeList.push_back(obj);
+}
+
 void ObjectManager::changeGrid(int x1, int y1, int x2, int y2, Collider* collider) {
 	if (x1 >= 0 && x1 < gridXs && y1 >= 0 && y1 < gridYs)
 		grid[x1*gridYs+y1].remove_if([collider](Collider* c){ return c->getID() == collider->getID();});
@@ -113,6 +119,17 @@ std::list<Collider*>* ObjectManager::getObjectsInGrid(int x, int y) const {
 void ObjectManager::updateObjects(Uint32 ticks) {
 	for ( size_t i = 0; i < gameObjects.size(); i++ ) {
 		gameObjects[i]->update(ticks);
+	}
+	while (removeList.size() > 0) {	
+		Collider *obj = dynamic_cast<Collider*>(removeList.front());
+		gameObjects.erase(std::remove(gameObjects.begin(), gameObjects.end(), obj));
+		std::cout << " ID: " << obj->getID() << " Before " << gameObjects.size() << " After ";
+		std::vector<Drawable*> *is = instanceSets[obj->getName()];
+		is->erase(std::remove(is->begin(), is->end(), obj));
+		std::cout << gameObjects.size() << std::endl;
+		if (obj && obj->getGridX() >= 0 && obj->getGridX() < gridXs && obj->getGridY() >= 0 && obj->getGridY() < gridYs)
+			grid[(int) (obj->getGridX()*gridYs+obj->getGridY())].remove(obj);
+		removeList.pop_front();
 	}
 }
 
@@ -136,7 +153,7 @@ std::vector<Drawable*>* ObjectManager::getObjectsOfType(const std::string& type)
 	return instanceSets[type];
 }
 
-ObjectManager::ObjectManager(int w, int h) : gameObjects(), instanceSets(), 
+ObjectManager::ObjectManager(int w, int h) : gameObjects(), instanceSets(), removeList(),
 	gridXs(Gamedata::getInstance().getXmlInt("world/width") / w + 1), 
 	gridYs(Gamedata::getInstance().getXmlInt("world/height") / h + 1),
 	grid(new std::list<Collider*>[gridXs*gridYs]), gridWidth(w), gridHeight(h) {}
