@@ -6,6 +6,7 @@
 #include <vector>
 #include <unordered_map>
 #include <list>
+#include "sludge.h"
 
 /**
  * ObjectManager class: this class contains a vector of all game
@@ -32,11 +33,15 @@ public:
 
 	void changeGrid(int, int, int, int, Collider*);
 	std::list<Collider*>* getObjectsInGrid(int, int) const;
+
+	std::list<Sludge*> getFreeList() const { return freeList; }
+	Sludge* getFreeObj();
 private:
 	ObjectManager(int w, int h);
 	std::vector<Drawable*> gameObjects;
 	std::unordered_map<std::string, std::vector<Drawable*>*> instanceSets;
 	std::list<Drawable*> removeList;
+	std::list<Sludge*> freeList;
 	int gridXs, gridYs;
 	std::list<Collider*> *grid;
 	int gridWidth, gridHeight;

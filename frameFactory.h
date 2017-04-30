@@ -3,7 +3,7 @@
 #include <map>
 #include "frame.h"
 #include "gamedata.h"
-#include "unpack.h"
+#include "spriteSheet.h"
 
 class FrameFactory {
 private:

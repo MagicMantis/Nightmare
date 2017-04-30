@@ -130,6 +130,7 @@ void ObjectManager::updateObjects(Uint32 ticks) {
 		if (obj && obj->getGridX() >= 0 && obj->getGridX() < gridXs && obj->getGridY() >= 0 && obj->getGridY() < gridYs)
 			grid[(int) (obj->getGridX()*gridYs+obj->getGridY())].remove(obj);
 		removeList.pop_front();
+		delete obj;
 	}
 }
 
@@ -153,7 +154,13 @@ std::vector<Drawable*>* ObjectManager::getObjectsOfType(const std::string& type)
 	return instanceSets[type];
 }
 
-ObjectManager::ObjectManager(int w, int h) : gameObjects(), instanceSets(), removeList(),
+Sludge* ObjectManager::getFreeObj() {
+	Sludge *s = freeList.front();
+	freeList.pop_front();
+	return s;
+}
+
+ObjectManager::ObjectManager(int w, int h) : gameObjects(), instanceSets(), removeList(), freeList(),
 	gridXs(Gamedata::getInstance().getXmlInt("world/width") / w + 1), 
 	gridYs(Gamedata::getInstance().getXmlInt("world/height") / h + 1),
 	grid(new std::list<Collider*>[gridXs*gridYs]), gridWidth(w), gridHeight(h) {}
