@@ -26,7 +26,7 @@ void Pool::update(Uint32 ticks) {
 
 	if (spawning) {
 		if (spawnTimer <= 0) {
-			//spawnSludge();
+			spawnSludge();
 			if (ObjectManager::getInstance().getFreeList().empty()) spawnTimer = 1200;
 		}
 	}

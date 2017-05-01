@@ -71,6 +71,7 @@ void Engine::update(Uint32 ticks) {
   fore.update();
   viewport.update(); // always update viewport last
   hud.update(ticks);
+  poolhud.update(ticks);
 }
 
 void Engine::switchSprite(){
@@ -130,7 +131,7 @@ void Engine::play() {
             else hud.display(0);
             break;
           case SDLK_F2:
-            if (poolhud.getTime() == 0) hud.display(10000);
+            if (poolhud.getTime() == 0) poolhud.display(10000);
             else poolhud.display(0);
             break;
           case SDLK_F4:
