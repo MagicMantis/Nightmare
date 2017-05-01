@@ -68,14 +68,24 @@
   <transparency>false</transparency>
 </foreground>
 
-<font name="font">
+<font name="info">
   <file>fonts/arial.ttf</file>
-  <size>24</size>
+  <size>18</size>
   <red>255</red>
   <green>255</green>
   <blue>255</blue>
   <alpha>0</alpha>
 </font>
+
+<font name="title">
+  <file>fonts/arial.ttf</file>
+  <size>18</size>
+  <red>255</red>
+  <green>255</green>
+  <blue>255</blue>
+  <alpha>0</alpha>
+</font>
+
 
 <spinstar>
   <file>images/spinstar.png</file>
@@ -122,9 +132,12 @@
   <width>32</width>
   <height>32</height>
   <chunk>
-    <size>9</size>
+    <size>10</size>
     <distance>100</distance>
   </chunk>
+  <speedX> 0.0 </speedX>
+  <speedY> 0.0 </speedY>
+  <startLoc x="0" y="0"/>
 </sludge>
 
 <shield>

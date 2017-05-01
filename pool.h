@@ -15,8 +15,5 @@ private:
 	bool spawning;
 	int spawnTimer;
 
-	std::list<Sludge*> sludgeList;
-	std::list<Sludge*> freeList;
-
 	void spawnSludge();
 };

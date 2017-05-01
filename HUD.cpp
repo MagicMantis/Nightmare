@@ -23,11 +23,14 @@ void HUD::draw(int fps) const {
 
 		std::stringstream strm;
 		strm << "Average FPS: " << fps;
-		io.writeText(strm.str(), x+5, y+40);
-		io.writeText("A: run left", x+5, y+70);
-		io.writeText("D: run right", x+5, y+100);
-		io.writeText("W: jump", x+5, y+130);
-		io.writeText("Avoid the sludge!", x+5, y+170);
+		io.writeText(strm.str(), x+5, y+30);
+		io.writeText("A: run left", x+5, y+50);
+		io.writeText("D: run right", x+5, y+70);
+		io.writeText("W: jump", x+5, y+90);
+		io.writeText("Space: blast", x+5, y+110);
+		io.writeText("Avoid the sludge and",x+5, y+140);
+		io.writeText("get to the end",x+5, y+160);
+		io.writeText("of the level!", x+5, y+180);
 	}
 }
 

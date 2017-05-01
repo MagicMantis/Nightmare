@@ -4,17 +4,13 @@
 Pool::Pool(const Vector2f& pos) : 
 	MultiSprite("pool"), 
 	spawning(true), 
-	spawnTimer(0),
-	sludgeList(),
-	freeList()
+	spawnTimer(0)
 { setPosition(pos); }
 
 Pool::Pool(const Pool& p) :
 	MultiSprite(p),
 	spawning(p.spawning),
-	spawnTimer(p.spawning),
-	sludgeList(p.sludgeList),
-	freeList(p.freeList)
+	spawnTimer(p.spawning)
 { }
 
 Pool::~Pool() {
@@ -23,9 +19,6 @@ Pool::~Pool() {
 
 void Pool::draw() const {
 	MultiSprite::draw();
-	for (Sludge* s : sludgeList) {
-		s->draw();
-	}
 }
 
 void Pool::update(Uint32 ticks) {
@@ -34,16 +27,12 @@ void Pool::update(Uint32 ticks) {
 	if (spawning) {
 		if (spawnTimer <= 0) {
 			spawnSludge();
-			spawnTimer = 1200;
+			if (ObjectManager::getInstance().getFreeList().empty()) spawnTimer = 1200;
 		}
 	}
 
 	if (spawnTimer > 0) spawnTimer -= ticks;
 	if (spawnTimer < 0) spawnTimer = 0;
-
-	for (Sludge* s : sludgeList) {
-		s->update(ticks);
-	}
 }
 
 void Pool::spawnSludge() {
