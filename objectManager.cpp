@@ -88,7 +88,7 @@ void ObjectManager::addObject(Drawable* obj) {
         search->second->push_back(obj);
     }
     else {
-        instanceSets[obj->getName()] = new std::vector<Drawable*>();
+        instanceSets[obj->getName()] = new std::list<Drawable*>();
         instanceSets[obj->getName()]->push_back(obj);
     }
     Collider* collider = dynamic_cast<Collider*>(obj);
@@ -101,6 +101,12 @@ void ObjectManager::addObject(Drawable* obj) {
 
 void ObjectManager::removeObject(Drawable* obj) {
 	removeList.push_back(obj);
+}
+
+Drawable* ObjectManager::getObject(int index) const {
+	auto it = gameObjects.begin();
+	while (index-- > 0) it++;
+	return *it;
 }
 
 void ObjectManager::changeGrid(int x1, int y1, int x2, int y2, Collider* collider) {
@@ -117,14 +123,16 @@ std::list<Collider*>* ObjectManager::getObjectsInGrid(int x, int y) const {
 
 //update all game objects
 void ObjectManager::updateObjects(Uint32 ticks) {
-	for ( size_t i = 0; i < gameObjects.size(); i++ ) {
-		gameObjects[i]->update(ticks);
+	for (Drawable* d : gameObjects) {
+		d->update(ticks);
 	}
+	// for ( size_t i = 0; i < gameObjects.size(); i++ ) {
+	// 	gameObjects[i]->update(ticks);
+	// }
 	while (removeList.size() > 0) {	
 		Collider *obj = dynamic_cast<Collider*>(removeList.front());
-		gameObjects.erase(std::remove(gameObjects.begin(), gameObjects.end(), obj));
-		std::vector<Drawable*> *is = instanceSets[obj->getName()];
-		is->erase(std::remove(is->begin(), is->end(), obj));
+		gameObjects.remove(obj);
+		instanceSets[obj->getName()]->remove(obj);
 		if (obj && obj->getGridX() >= 0 && obj->getGridX() < gridXs && obj->getGridY() >= 0 && obj->getGridY() < gridYs)
 			grid[(int) (obj->getGridX()*gridYs+obj->getGridY())].remove(obj);
 		removeList.pop_front();
@@ -138,8 +146,11 @@ void ObjectManager::updateObjects(Uint32 ticks) {
 
 //draw all objects
 void ObjectManager::drawObjects() const {
-	for ( size_t   i = 0; i < gameObjects.size(); i++ ) {
-		gameObjects[i]->draw();
+	// for ( size_t   i = 0; i < gameObjects.size(); i++ ) {
+	// 	gameObjects[i]->draw();
+	// }
+	for ( Drawable* d : gameObjects) {
+		d->draw();
 	}
 }
 
@@ -149,10 +160,10 @@ ObjectManager::~ObjectManager() {
 }
 
 Drawable* ObjectManager::getObject(const std::string& type) {
-	return (*instanceSets[type])[0];
+	return (*instanceSets[type]).front();
 }
 
-std::vector<Drawable*>* ObjectManager::getObjectsOfType(const std::string& type) {
+std::list<Drawable*>* ObjectManager::getObjectsOfType(const std::string& type) {
 	return instanceSets[type];
 }
 

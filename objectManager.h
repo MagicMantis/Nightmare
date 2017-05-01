@@ -26,10 +26,10 @@ public:
 	void drawObjects() const; //draw all objects
 
 	int getInstanceCount() const { return gameObjects.size(); }
-	Drawable* getObject(int index) const { return gameObjects[index]; }
+	Drawable* getObject(int index) const;
 
 	Drawable* getObject(const std::string&);
-	std::vector<Drawable*>* getObjectsOfType(const std::string&);
+	std::list<Drawable*>* getObjectsOfType(const std::string&);
 
 	void changeGrid(int, int, int, int, Collider*);
 	std::list<Collider*>* getObjectsInGrid(int, int) const;
@@ -38,8 +38,8 @@ public:
 	Sludge* getFreeObj();
 private:
 	ObjectManager(int w, int h);
-	std::vector<Drawable*> gameObjects;
-	std::unordered_map<std::string, std::vector<Drawable*>*> instanceSets;
+	std::list<Drawable*> gameObjects;
+	std::unordered_map<std::string, std::list<Drawable*>*> instanceSets;
 	std::list<Drawable*> removeList;
 	std::list<Sludge*> freeList;
 	int gridXs, gridYs;
