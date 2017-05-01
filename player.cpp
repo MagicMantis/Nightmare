@@ -54,25 +54,6 @@ void Player::update(Uint32 ticks) {
 	if (Gamedata::getInstance().getLeftKey()) accelerate(-accel);
 	else if (getVelocityX() < 0) decelerate(decel);
 
-	//cause screen jitter from fear
-	/*for (int xx = -1; xx <= 1; xx++) {
-		for (int yy = -1; yy <= 1; yy++) {
-			auto* objs = ObjectManager::getInstance().getObjectsInGrid(getGridX()+xx, getGridY()+yy);
-			if (objs) {
-				for (Collider* c : *objs) {
-					if (c == this) continue;
-					Sludge* sludge = dynamic_cast<Sludge*>(c);
-					if (sludge) {
-						float dist = getDistance(sludge);
-						if (dist < sludge->getRadius()*3) {
-							fear += 0.1;
-						}
-					}
-				}
-			}
-		}
-	}*/
-
 	if (shield) shield->update(ticks);
 	else {
 		shieldCooldown -= ticks;

@@ -50,6 +50,13 @@
   <height>200</height>
 </HUD>
 
+<poolHUD>
+  <x>300</x>
+  <y>0</y>
+  <width>200</width>
+  <height>200</height>
+</poolHUD>
+
 <farbuildings>
   <file>images/bkgnd.png</file>
   <factor>50</factor>
@@ -68,7 +75,7 @@
   <transparency>false</transparency>
 </foreground>
 
-<font name="info">
+<font name="font">
   <file>fonts/arial.ttf</file>
   <size>18</size>
   <red>255</red>
@@ -76,16 +83,6 @@
   <blue>255</blue>
   <alpha>0</alpha>
 </font>
-
-<font name="title">
-  <file>fonts/arial.ttf</file>
-  <size>18</size>
-  <red>255</red>
-  <green>255</green>
-  <blue>255</blue>
-  <alpha>0</alpha>
-</font>
-
 
 <spinstar>
   <file>images/spinstar.png</file>
@@ -139,6 +136,15 @@
   <speedY> 0.0 </speedY>
   <startLoc x="0" y="0"/>
 </sludge>
+
+<boom>
+  <file>images/sludge.png</file>
+  <width>32</width>
+  <height>32</height>
+  <speedX> 0.0 </speedX>
+  <speedY> 0.0 </speedY>
+  <startLoc x="0" y="0"/>
+</boom>
 
 <shield>
   <file>images/shield.png</file>

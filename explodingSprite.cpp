@@ -2,6 +2,7 @@
 #include <cmath>
 #include "explodingSprite.h"
 #include "spriteSheet.h"
+#include "objectManager.h"
 
 ExplodingSprite::ExplodingSprite(const Sprite& s) :
   Sprite(s), 
@@ -10,6 +11,7 @@ ExplodingSprite::ExplodingSprite(const Sprite& s) :
   makeChunks(
     Gamedata::getInstance().getXmlInt(s.getName()+"/chunk/size")
   );
+  setName("boom");
 }
 
 ExplodingSprite::~ExplodingSprite() { 

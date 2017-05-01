@@ -23,7 +23,7 @@ private:
   SDL_Renderer * const renderer;
   World far, back, fore;
   Viewport& viewport;
-  HUD hud;
+  HUD hud, poolhud;
 
   // ObjectManager objectManager;
   // std::vector<Drawable*> sprites;

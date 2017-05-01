@@ -27,10 +27,14 @@ Engine::Engine() :
   back("backbuildings", Gamedata::getInstance().getXmlInt("backbuildings/factor") ),
   fore("foreground", Gamedata::getInstance().getXmlInt("foreground/factor") ),
   viewport( Viewport::getInstance() ),
-  hud(Gamedata::getInstance().getXmlInt("HUD/x"),
+  hud(0, Gamedata::getInstance().getXmlInt("HUD/x"),
     Gamedata::getInstance().getXmlInt("HUD/y"),
     Gamedata::getInstance().getXmlInt("HUD/width"),
     Gamedata::getInstance().getXmlInt("HUD/height")),
+  poolhud(1, Gamedata::getInstance().getXmlInt("poolHUD/x"),
+    Gamedata::getInstance().getXmlInt("poolHUD/y"),
+    Gamedata::getInstance().getXmlInt("poolHUD/width"),
+    Gamedata::getInstance().getXmlInt("poolHUD/height")),
   // sprites(),
   currentSprite(-1),
 
@@ -42,6 +46,7 @@ Engine::Engine() :
   Viewport::getInstance().setObjectToTrack(ObjectManager::getInstance().getObject("player"));
   std::cout << "Loading complete" << std::endl;
   hud.display(3000);
+  poolhud.display(3000);
 }
 
 void Engine::draw() const {
@@ -54,6 +59,7 @@ void Engine::draw() const {
 
   viewport.draw();
   hud.draw(clock.getAvgFps());
+  poolhud.draw(clock.getAvgFps());
   SDL_RenderPresent(renderer);
 }
 
@@ -119,11 +125,13 @@ void Engine::play() {
           case SDLK_t:
             switchSprite();
             break;
-          case SDLK_e:
-            break;
           case SDLK_F1:
             if (hud.getTime() == 0) hud.display(1000000);
             else hud.display(0);
+            break;
+          case SDLK_F2:
+            if (poolhud.getTime() == 0) hud.display(10000);
+            else poolhud.display(0);
             break;
           case SDLK_F4:
             if (!makeVideo) {

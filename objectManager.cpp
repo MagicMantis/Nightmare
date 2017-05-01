@@ -18,9 +18,6 @@ ObjectManager& ObjectManager::getInstance() {
 }
 
 void ObjectManager::initObjects() {
-	//add player
-	addObject( new Player("player") );
-
 	//add pool
 	Vector2f loc;
 	loc[0] = 1600;
@@ -28,6 +25,10 @@ void ObjectManager::initObjects() {
 	addObject( new Pool(loc) );
 	loc[0] = 2300;
 	addObject( new Pool(loc) );
+	
+	//add player
+	addObject( new Player("player") );
+
 
 	//generate rain effects
 	int rainCount = Gamedata::getInstance().getXmlInt("rain/count");
@@ -141,6 +142,7 @@ void ObjectManager::updateObjects(Uint32 ticks) {
 			s->reset();
 			freeList.push_back(s);	
 		}
+		else delete obj;
 	}
 }
 

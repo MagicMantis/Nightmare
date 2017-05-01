@@ -5,10 +5,10 @@
 class HUD {
 public:
 	HUD() : renderer(RenderContext::getInstance()->getRenderer()),
-		x(0),y(0),width(0),height(0),time(0) { }
-	HUD(int xp, int yp, int w, int h) : 
+		x(0),y(0),width(0),height(0),time(0), HUDid(0) { }
+	HUD(int id, int xp, int yp, int w, int h) : 
 		renderer(RenderContext::getInstance()->getRenderer()),
-		x(xp), y(yp), width(w), height(h), time(0) { }
+		x(xp), y(yp), width(w), height(h), time(0), HUDid(id) { }
 
 	int getTime() const { return time; }
 
@@ -18,5 +18,5 @@ public:
 private:
 	SDL_Renderer * renderer;
 	int x, y, width, height;
-	int time;
+	int time, HUDid;
 };
