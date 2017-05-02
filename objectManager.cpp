@@ -32,8 +32,6 @@ void ObjectManager::initObjects() {
 	//add player
 	addObject( new Player("player") );
 
-	std::cerr << " fine to here\n ";
-
 	//generate rain effects
 	int rainCount = Gamedata::getInstance().getXmlInt("rain/count");
 	float rainSpeed = Gamedata::getInstance().getXmlFloat("rain/speed");
@@ -44,15 +42,12 @@ void ObjectManager::initObjects() {
 	for (int i = 0; i < rainCount; i++) {
 		int len = rand()%4+3;
 		Rain* r = new Rain((float)i*((float)w/(float)rainCount), (rand()%h), len, h*(.9)+h*(.1*len/6), rainSpeed);
-		std::cerr << i << std::endl;
 		rain_vec->push_back(r);
 	}
-	std::cerr << " fine to here\n ";
 	for (Rain* r : *rain_vec) { 
 		if (r->getLength() <= 3) addObject(r);
 	}
 
-	std::cerr << " fine to here\n ";
 	//generate sludge balls
 	int sludgeCount = Gamedata::getInstance().getXmlInt("sludgeCount")/2;
   	float u = Gamedata::getInstance().getXmlFloat("sludge/radius"); //Mean size
@@ -174,21 +169,26 @@ ObjectManager::~ObjectManager() {
 	}
 }
 
-void ObjectManager::resetObjects() {
-	for (auto& it : gameObjects) delete it;
-	gameObjects.clear();
-	for (auto& it : instanceSets) {
-	 	it.second->clear();
-	  	delete it.second;
-	}
-	for (int i = 0; i < gridXs; i++) {
-		for (int j = 0; j < gridYs; j++) {
-			grid[i*gridYs+j].clear();
-		}
-	}
-	for (auto& it : freeList) delete it;
-	freeList.clear();
-	removeList.clear();
+// void ObjectManager::resetObjects() {
+// 	for (auto& it : gameObjects) delete it;
+// 	gameObjects.clear();
+// 	for (auto& it : instanceSets) {
+// 	 	it.second->clear();
+// 	  	delete it.second;
+// 	}
+// 	for (int i = 0; i < gridXs; i++) {
+// 		for (int j = 0; j < gridYs; j++) {
+// 			grid[i*gridYs+j].clear();
+// 		}
+// 	}
+// 	for (auto& it : freeList) delete it;
+// 	freeList.clear();
+// 	removeList.clear();
+// }
+
+void ObjectManager::reset() {
+	delete objectManager;
+	objectManager = nullptr;
 }
 
 Drawable* ObjectManager::getObject(const std::string& type) {

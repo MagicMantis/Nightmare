@@ -3,6 +3,7 @@
 
 FrameFactory*  FrameFactory::instance = NULL;
 RenderContext* RenderContext::instance = NULL;
+ObjectManager* ObjectManager::objectManager = nullptr;
 
 int main(int, char*[]) {
    try {
@@ -16,3 +17,4 @@ int main(int, char*[]) {
    }
    return 0;
 }
+

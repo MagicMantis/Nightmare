@@ -71,6 +71,6 @@ void SDLSound::startMusic() {
 
 void SDLSound::stopMusic() {
   Mix_HaltMusic();
-  Mix_FreeMusic(music);
+  //Mix_FreeMusic(music);
 }
 

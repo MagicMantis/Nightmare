@@ -93,7 +93,6 @@ void Engine::play() {
   FrameGenerator frameGen;
 
   while ( !done ) {
-    bool did = false;
     while ( SDL_PollEvent(&event) ) {
       if (event.type ==  SDL_QUIT) { done = true; break; }
       if (event.type == SDL_KEYDOWN) {
@@ -144,11 +143,7 @@ void Engine::play() {
             if (gameover) resetGame();
             break;
           case SDLK_r:
-            if (!did) {
-              did = true;
-              SDL_FlushEvent(SDLK_r);
-              resetGame();
-            }
+            resetGame();
             break;
           case SDLK_t:
             switchSprite();
@@ -210,12 +205,13 @@ void Engine::play() {
 }
 
 void Engine::resetGame() {
-  std::cout << "Attempt" << std::endl;
-  //clear events
-  ObjectManager::getInstance().resetObjects();
+  ObjectManager::reset();
   ObjectManager::getInstance().initObjects();
-  //Viewport::getInstance().setObjectToTrack(ObjectManager::getInstance().getObject("player"));
+  Viewport::getInstance().setObjectToTrack(ObjectManager::getInstance().getObject("player"));
+  sound.stopMusic();
+  sound.startMusic();
   std::cout << "Loading complete" << std::endl;
   hud.display(3000);
   poolhud.display(3000);
+  viewport.setFade(0);
 }

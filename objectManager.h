@@ -15,11 +15,11 @@
 class ObjectManager {
 public:
 	static ObjectManager& getInstance();
+	static void reset(); //recreate object manager
 	ObjectManager(const ObjectManager&) = delete;
 	ObjectManager& operator=(const ObjectManager&) = delete;
 	~ObjectManager();
 
-	void resetObjects(); //recreate object manager
 
 	void addObject(Drawable*, bool = false); //add an object 
 	void removeObject(Drawable*); //remove an object from being updated and drawn
@@ -53,7 +53,5 @@ private:
 	int gridWidth, gridHeight;
 	Player *playerStore;
 };
-
-ObjectManager* ObjectManager::objectManager = nullptr;
 
 #endif
