@@ -28,6 +28,9 @@ public:
 	void stop();
 	void makeShield();
 	void popShield();
+
+	bool getGodMode() const { return godMode; }
+	void setGodMode(bool g) { godMode = g; }
 private:
 	bool onGround();
 	float fear;
@@ -36,6 +39,8 @@ private:
 	//shield
 	int shieldCooldown;
 	Shield* shield;
+
+	bool godMode;
 
 	std::list<Sludge*> observers;
 };

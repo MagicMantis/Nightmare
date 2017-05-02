@@ -60,25 +60,28 @@ void Sludge::update(Uint32 ticks) {
 		accel = accel + bounce(gravity);
 
 		//seek target
-		if (!player) player = (Player *)ObjectManager::getInstance().getObject("player");
-		Vector2f target = player->getPosition();
-		//target[0] = Gamedata::getInstance().getMouseX() + Viewport::getInstance().getX();
-		//target[1] = Gamedata::getInstance().getMouseY() + Viewport::getInstance().getY();
-		target[0] += 16;
-		target[1] += 32;
-		float dist = getDistance(target);
-		float xratio = (getX()-target[0]) / dist;
-		float yratio = (getY()-target[1]) / dist;
-		accel[0] -= Gamedata::getInstance().getXmlFloat("sludge/seekSpeed") * xratio * 2;
-		accel[1] -= Gamedata::getInstance().getXmlFloat("sludge/seekSpeed") * yratio;
+		player = (Player *)ObjectManager::getInstance().getObject("player");
+		if (player) {
+			Vector2f target = player->getPosition();
+			//target[0] = Gamedata::getInstance().getMouseX() + Viewport::getInstance().getX();
+			//target[1] = Gamedata::getInstance().getMouseY() + Viewport::getInstance().getY();
+			target[0] += 16;
+			target[1] += 32;
+			float dist = getDistance(target);
+			float xratio = (getX()-target[0]) / dist;
+			float yratio = (getY()-target[1]) / dist;
+			accel[0] -= Gamedata::getInstance().getXmlFloat("sludge/seekSpeed") * xratio * 2;
+			accel[1] -= Gamedata::getInstance().getXmlFloat("sludge/seekSpeed") * yratio;
 
-		if (dist < getRadius()) {
-			player->attach(this);
-			xoffset = getX()-target[0]+16;
-			yoffset = getY()-target[1]+32;
-			state = 1;
-			grip = 3000;
+			if (dist < getRadius() && !player->getGodMode()) {
+				player->attach(this);
+				xoffset = getX()-target[0]+16;
+				yoffset = getY()-target[1]+32;
+				state = 1;
+				grip = 3000;
+			}
 		}
+		
 
 		//damping
 		accel = accel - (damping * getVelocity());

@@ -19,11 +19,12 @@ public:
 	ObjectManager& operator=(const ObjectManager&) = delete;
 	~ObjectManager();
 
-	void addObject(Drawable*);
-	void removeObject(Drawable*);
+	void addObject(Drawable*, bool = false); //add an object 
+	void removeObject(Drawable*); //remove an object from being updated and drawn
 	void initObjects(); //generate all objects in the scene
 	void updateObjects(Uint32 ticks); //update all objects
 	void drawObjects() const; //draw all objects
+	void resetObjects(); //remove all objects from game
 
 	int getInstanceCount() const { return gameObjects.size(); }
 	Drawable* getObject(int index) const;
@@ -36,6 +37,9 @@ public:
 
 	std::list<Sludge*> getFreeList() const { return freeList; }
 	Sludge* getFreeObj();
+
+	void playerRespawn(Uint32 ticks);
+	void storePlayer(Player *p) { playerStore = p; }
 private:
 	ObjectManager(int w, int h);
 	std::list<Drawable*> gameObjects;
@@ -45,6 +49,7 @@ private:
 	int gridXs, gridYs;
 	std::list<Collider*> *grid;
 	int gridWidth, gridHeight;
+	Player *playerStore;
 };
 
 #endif

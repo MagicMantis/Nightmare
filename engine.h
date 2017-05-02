@@ -7,6 +7,7 @@
 #include "viewport.h"
 #include "objectManager.h"
 #include "HUD.h"
+#include "sound.h"
 
 class Engine {
 public:
@@ -15,12 +16,14 @@ public:
   void play();
   void switchSprite();
 
+  bool getGameOver() const { return gameover; }
 private:
   const RenderContext* rc;
   const IOmod& io;
   Clock& clock;
 
   SDL_Renderer * const renderer;
+  SDLSound sound;  
   World far, back, fore;
   Viewport& viewport;
   HUD hud, poolhud;
@@ -29,10 +32,11 @@ private:
   // std::vector<Drawable*> sprites;
 
   int currentSprite;
-  bool makeVideo;
+  bool makeVideo, gameover;
 
   void draw() const;
   void update(Uint32);
+  void resetGame();
 
   Engine(const Engine&) = delete;
   Engine& operator=(const Engine&) = delete;

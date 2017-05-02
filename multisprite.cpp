@@ -1,6 +1,8 @@
 #include "multisprite.h"
 #include "gamedata.h"
 #include "renderContext.h"
+#include "sprite.h"
+#include "objectManager.h"
 
 void MultiSprite::advanceFrame(Uint32 ticks) {
 	timeSinceLastFrame += ticks;
@@ -68,4 +70,12 @@ void MultiSprite::update(Uint32 ticks) {
     setVelocityX( -fabs( getVelocityX() ) );
   }  
 
+}
+
+void MultiSprite::explode() {
+  Sprite* s = new Sprite("explodePlayer");
+  s->setPosition(getPosition());
+  s->explode(false);
+  //delete s;
+  ObjectManager::getInstance().removeObject(this);
 }

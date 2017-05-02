@@ -78,8 +78,8 @@ void Sprite::update(Uint32 ticks) {
   }  
 }
 
-void Sprite::explode() {
+void Sprite::explode(bool remove) {
   Drawable *boom = new ExplodingSprite(*static_cast<Sprite*>(this));
   ObjectManager::getInstance().addObject(boom);
-  ObjectManager::getInstance().removeObject(this);
+  if (remove) ObjectManager::getInstance().removeObject(this);
 }

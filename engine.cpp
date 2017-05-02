@@ -23,6 +23,7 @@ Engine::Engine() :
   io( IOmod::getInstance() ),
   clock( Clock::getInstance() ),
   renderer( rc->getRenderer() ),
+  sound(),
   far("farbuildings", Gamedata::getInstance().getXmlInt("farbuildings/factor") ),
   back("backbuildings", Gamedata::getInstance().getXmlInt("backbuildings/factor") ),
   fore("foreground", Gamedata::getInstance().getXmlInt("foreground/factor") ),
@@ -38,7 +39,7 @@ Engine::Engine() :
   // sprites(),
   currentSprite(-1),
 
-  makeVideo( Gamedata::getInstance().getXmlBool("makeVideo") )
+  makeVideo( Gamedata::getInstance().getXmlBool("makeVideo") ), gameover(false)
 {
   ObjectManager::getInstance().initObjects();
   //sprites.push_back( new Sludge() );
@@ -58,6 +59,7 @@ void Engine::draw() const {
   ObjectManager::getInstance().drawObjects();
 
   viewport.draw();
+
   hud.draw(clock.getAvgFps());
   poolhud.draw(clock.getAvgFps());
   SDL_RenderPresent(renderer);
@@ -72,6 +74,10 @@ void Engine::update(Uint32 ticks) {
   viewport.update(); // always update viewport last
   hud.update(ticks);
   poolhud.update(ticks);
+
+  if (viewport.getFade() >= 10.0) {
+    gameover = true;
+  }
 }
 
 void Engine::switchSprite(){
@@ -87,6 +93,7 @@ void Engine::play() {
   FrameGenerator frameGen;
 
   while ( !done ) {
+    bool did = false;
     while ( SDL_PollEvent(&event) ) {
       if (event.type ==  SDL_QUIT) { done = true; break; }
       if (event.type == SDL_KEYDOWN) {
@@ -106,22 +113,38 @@ void Engine::play() {
             break;
           case SDLK_w:
             p = (Player*) ObjectManager::getInstance().getObject("player");
-            p->jump();
+            if (p) p->jump();
             break;
           case SDLK_SPACE:
             p = (Player*) ObjectManager::getInstance().getObject("player");
-            p->makeShield();
+            if (p) p->makeShield();
             break;
           case SDLK_DOWN:
             p = (Player*) ObjectManager::getInstance().getObject("player");
-            p->stop();
+            if (p) p->stop();
             break;
           case SDLK_p:
             if ( clock.isPaused() ) clock.unpause();
             else clock.pause();
             break;
-          case SDLK_s:
-            //clock.toggleSloMo();
+          case SDLK_g:
+            p = (Player*) ObjectManager::getInstance().getObject("player");
+            if (p && !p->getGodMode())
+              p->setGodMode(true);
+            else if (p && p->getGodMode()) 
+              p->setGodMode(false);
+          // case SDLK_s:
+          //   clock.toggleSloMo();
+          //   break;
+          case SDLK_RETURN:
+            if (gameover) resetGame();
+            break;
+          case SDLK_r:
+            if (!did) {
+              did = true;
+              SDL_FlushEvent(SDLK_r);
+              resetGame();
+            }
             break;
           case SDLK_t:
             switchSprite();
@@ -167,12 +190,28 @@ void Engine::play() {
 
     ticks = clock.getElapsedTicks();
     if ( ticks > 0 ) {
-      clock.incrFrame();
-      draw();
-      update(ticks);
-      if ( makeVideo ) {
-        frameGen.makeFrame();
+      if (!gameover) {
+        clock.incrFrame();
+        update(ticks);
+        draw();
+        if ( makeVideo ) {
+          frameGen.makeFrame();
+        }
+      }
+      else if (!clock.isPaused()) {
+        clock.pause();
       }
     }
   }
+}
+
+void Engine::resetGame() {
+  std::cout << "Attempt" << std::endl;
+  //clear events
+  ObjectManager::getInstance().resetObjects();
+  ObjectManager::getInstance().initObjects();
+  //Viewport::getInstance().setObjectToTrack(ObjectManager::getInstance().getObject("player"));
+  std::cout << "Loading complete" << std::endl;
+  hud.display(3000);
+  poolhud.display(3000);
 }

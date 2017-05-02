@@ -110,7 +110,24 @@
   <maxSpeed>300.0</maxSpeed>
   <width> 0.0 </width>
   <height> 0.0 </height>
+  <respawn> 3000 </respawn>
 </player>
+
+<explodePlayer>
+  <file>images/idle.png</file>
+  <frames>12</frames>
+  <frameWidth>55</frameWidth>
+  <frameHeight>76</frameHeight>
+  <chunk>
+    <size>10</size>
+    <distance>100</distance>
+  </chunk>
+  <speedX> 0.0 </speedX>
+  <speedY> 0.0 </speedY>
+  <startLoc x="0" y="0"/>
+  <width> 0.0 </width>
+  <height> 0.0 </height>
+</explodePlayer>
 
 <star>
   <file>images/yellowstar32.png</file>

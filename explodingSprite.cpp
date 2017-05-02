@@ -39,6 +39,7 @@ void ExplodingSprite::update(Uint32 ticks) {
     }   
     else ++ptr;
   }
+  if (chunks.empty()) ObjectManager::getInstance().removeObject(this);
 }
 
 void ExplodingSprite::makeChunks(unsigned int n) { 

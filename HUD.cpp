@@ -23,7 +23,10 @@ void HUD::draw(int fps) const {
 		IOmod& io = IOmod::getInstance();
 		//basic game info hud
 		if (HUDid == 0) {
-	  		io.writeText("Tracking: "+Viewport::getInstance().getObjectToTrack()->getName(), x+5, y+10);
+			std::string name = "None";
+			if (Viewport::getInstance().getObjectToTrack())
+				name = Viewport::getInstance().getObjectToTrack()->getName();
+	  		io.writeText("Tracking: "+name, x+5, y+10);
 
 			std::stringstream strm;
 			strm << "Average FPS: " << fps;

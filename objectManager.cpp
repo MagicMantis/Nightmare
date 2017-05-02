@@ -9,6 +9,7 @@
 #include "rain.h"
 #include "pool.h"
 #include "gamedata.h"
+#include "viewport.h"
 
 ObjectManager& ObjectManager::getInstance() {
   int gridWidth = Gamedata::getInstance().getXmlInt("grid/width");
@@ -29,22 +30,27 @@ void ObjectManager::initObjects() {
 	//add player
 	addObject( new Player("player") );
 
+	std::cerr << " fine to here\n ";
 
 	//generate rain effects
 	int rainCount = Gamedata::getInstance().getXmlInt("rain/count");
 	float rainSpeed = Gamedata::getInstance().getXmlFloat("rain/speed");
 	int w = Gamedata::getInstance().getXmlInt("view/width");
 	int h = Gamedata::getInstance().getXmlInt("view/height");
-	std::vector<Rain*> rain_vec;
+	std::vector<Rain*> *rain_vec = new std::vector<Rain*>();
+	rain_vec->reserve(10);
 	for (int i = 0; i < rainCount; i++) {
 		int len = rand()%4+3;
 		Rain* r = new Rain((float)i*((float)w/(float)rainCount), (rand()%h), len, h*(.9)+h*(.1*len/6), rainSpeed);
-		rain_vec.push_back(r);
+		std::cerr << i << std::endl;
+		rain_vec->push_back(r);
 	}
-	for (Rain* r : rain_vec) { 
+	std::cerr << " fine to here\n ";
+	for (Rain* r : *rain_vec) { 
 		if (r->getLength() <= 3) addObject(r);
 	}
 
+	std::cerr << " fine to here\n ";
 	//generate sludge balls
 	int sludgeCount = Gamedata::getInstance().getXmlInt("sludgeCount")/2;
   	float u = Gamedata::getInstance().getXmlFloat("sludge/radius"); //Mean size
@@ -74,16 +80,20 @@ void ObjectManager::initObjects() {
 	for (Sludge* s : tempVec) addObject( s );
 
 	//finish effects
-	for (Rain* r : rain_vec) { 
+	for (Rain* r : *rain_vec) { 
 		if (r->getLength() > 3) addObject(r);
 	}
 	for (int i = 0; i < 20; i++) {
 		addObject( new Smog() );
 	}
+
+	rain_vec->clear();
+	delete rain_vec;
 }
 
-void ObjectManager::addObject(Drawable* obj) {
-	gameObjects.push_back(obj);
+void ObjectManager::addObject(Drawable* obj, bool front) {
+	if (front) gameObjects.push_front(obj);
+	else gameObjects.push_back(obj);
 	auto search = instanceSets.find(obj->getName());
     if(search != instanceSets.end()) {
         search->second->push_back(obj);
@@ -127,9 +137,7 @@ void ObjectManager::updateObjects(Uint32 ticks) {
 	for (Drawable* d : gameObjects) {
 		d->update(ticks);
 	}
-	// for ( size_t i = 0; i < gameObjects.size(); i++ ) {
-	// 	gameObjects[i]->update(ticks);
-	// }
+	playerRespawn(ticks);
 	while (removeList.size() > 0) {	
 		Collider *obj = dynamic_cast<Collider*>(removeList.front());
 		gameObjects.remove(obj);
@@ -138,19 +146,20 @@ void ObjectManager::updateObjects(Uint32 ticks) {
 			grid[(int) (obj->getGridX()*gridYs+obj->getGridY())].remove(obj);
 		removeList.pop_front();
 		Sludge *s = dynamic_cast<Sludge*>(obj);
+		Player *p = dynamic_cast<Player*>(obj);
 		if (s) {
 			s->reset();
 			freeList.push_back(s);	
 		}
-		else delete obj;
+		else if (p) {
+			playerStore = p;
+		}
+		//else delete obj;
 	}
 }
 
 //draw all objects
 void ObjectManager::drawObjects() const {
-	// for ( size_t   i = 0; i < gameObjects.size(); i++ ) {
-	// 	gameObjects[i]->draw();
-	// }
 	for ( Drawable* d : gameObjects) {
 		d->draw();
 	}
@@ -158,10 +167,30 @@ void ObjectManager::drawObjects() const {
 
 ObjectManager::~ObjectManager() {
 	for (auto& it : gameObjects) delete it;
-	for (auto& it : instanceSets) delete it.second;
+	for (auto& it : instanceSets) {
+		delete it.second;
+	}
+}
+
+void ObjectManager::resetObjects() {
+	for (auto& it : gameObjects) delete it;
+	gameObjects.clear();
+	for (auto& it : instanceSets) {
+	 	it.second->clear();
+	  	delete it.second;
+	}
+	for (int i = 0; i < gridXs; i++) {
+		for (int j = 0; j < gridYs; j++) {
+			grid[i*gridYs+j].clear();
+		}
+	}
+	for (auto& it : freeList) delete it;
+	freeList.clear();
+	removeList.clear();
 }
 
 Drawable* ObjectManager::getObject(const std::string& type) {
+	if ((*instanceSets[type]).empty()) return nullptr;
 	return (*instanceSets[type]).front();
 }
 
@@ -175,7 +204,23 @@ Sludge* ObjectManager::getFreeObj() {
 	return s;
 }
 
+void ObjectManager::playerRespawn(Uint32 ticks) {
+	static int respawnTimer = Gamedata::getInstance().getXmlInt("player/respawn");
+	if (playerStore) {
+		respawnTimer -= ticks;
+		if (respawnTimer <= 0) {
+			respawnTimer = Gamedata::getInstance().getXmlInt("player/respawn");
+			addObject(playerStore, true);
+			Viewport::getInstance().setObjectToTrack(playerStore);
+			playerStore = nullptr;
+		}
+	}
+
+}
+
 ObjectManager::ObjectManager(int w, int h) : gameObjects(), instanceSets(), removeList(), freeList(),
 	gridXs(Gamedata::getInstance().getXmlInt("world/width") / w + 1), 
 	gridYs(Gamedata::getInstance().getXmlInt("world/height") / h + 1),
-	grid(new std::list<Collider*>[gridXs*gridYs]), gridWidth(w), gridHeight(h) {}
+	grid(new std::list<Collider*>[gridXs*gridYs]), gridWidth(w), gridHeight(h), 
+	playerStore(nullptr) 
+{ }

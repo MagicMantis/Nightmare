@@ -15,7 +15,7 @@ public:
   void setFrame(const Frame* f) { frame = f; }
   virtual void draw() const;
   virtual void update(Uint32 ticks);
-  void explode();
+  void explode(bool=true);
 protected:
   int getWorldWidth() const { return worldWidth; }
   int getWorldHeight() const { return worldHeight; }

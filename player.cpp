@@ -11,6 +11,7 @@ Player::Player(const std::string& name) :
 	jumps(1),
 	shieldCooldown(0),
 	shield(nullptr),
+	godMode(false),
 	observers()
 { }
 
@@ -20,6 +21,7 @@ Player::Player(const Player& p) :
 	jumps(p.jumps),
 	shieldCooldown(p.shieldCooldown),
 	shield(p.shield),
+	godMode(false),
 	observers(p.observers)
 { }
 
@@ -68,6 +70,14 @@ void Player::update(Uint32 ticks) {
 	fear = Gamedata::clamp(fear, 0.0, 10.0);
 	Viewport::getInstance().setJitter(fear);
 	Viewport::getInstance().setFade(fear);
+	if (fear >= 10.0) {
+		Viewport::getInstance().setFade(0);
+		Viewport::getInstance().setJitter(0);
+		Viewport::getInstance().setObjectToTrack(nullptr);
+		explode();
+		fear = 0.0;
+		ObjectManager::getInstance().storePlayer(this);
+	}
 }
 
 void Player::draw() const {

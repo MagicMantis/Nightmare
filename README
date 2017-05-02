@@ -33,4 +33,12 @@ The easiest part of this project:
 
 Problems that I had in completing this project: 
 
-	I believe my keyboard is broken in that SDL will create multiple events for a single keypress. Note that this is different from keybounce. The key will create multiple keypress event randomly as it is being held (not continuously). I was unable to fix this. It runs fine on any other machine that I have run it on.
+	Issue where trying to operate a Rain vector after resetting was causing seg faults.
+
+todo:
+	* restart game
+	* win condition
+	* god mode with g
+	* object pool - DONE
+	* explosions - DONE
+	* 

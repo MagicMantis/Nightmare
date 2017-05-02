@@ -24,8 +24,10 @@ void Shield::update(Uint32 ticks) {
 					if (sludge) {
 						float dist = getDistance(sludge);
 						if (dist < sludge->getRadius()+getRadius()) {
-							sludge->explode();
-							//sludge->blast(Vector2f(player->getX()+16, player->getY()+32));
+							if (rand()%15 == 0)
+								sludge->explode();
+							else
+								sludge->blast(Vector2f(player->getX()+16, player->getY()+32));
 						}
 					}
 				}
