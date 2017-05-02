@@ -117,7 +117,11 @@ void Engine::play() {
             break;
           case SDLK_SPACE:
             p = (Player*) ObjectManager::getInstance().getObject("player");
-            if (p) p->makeShield();
+            if (p) {
+              if (p->makeShield()) {
+                sound[1];
+              }
+            }
             break;
           case SDLK_DOWN:
             p = (Player*) ObjectManager::getInstance().getObject("player");

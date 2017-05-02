@@ -141,11 +141,13 @@ bool Player::onGround() {
 	return false;
 }
 
-void Player::makeShield() {
+bool Player::makeShield() {
 	if (!shield && shieldCooldown == 0) {
 		shield = new Shield(this);
-		shieldCooldown = 1200;
+		shieldCooldown = Gamedata::getInstance().getXmlInt("player/shieldCooldown");
+		return true;
 	}
+	return false;
 }
 
 void Player::popShield() {

@@ -111,6 +111,7 @@
   <width> 0.0 </width>
   <height> 0.0 </height>
   <respawn> 3000 </respawn>
+  <shieldCooldown> 1500 </shieldCooldown>
 </player>
 
 <explodePlayer>

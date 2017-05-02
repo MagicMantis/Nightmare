@@ -26,7 +26,7 @@ public:
 	void decelerate(float amount); 
 	void jump();
 	void stop();
-	void makeShield();
+	bool makeShield();
 	void popShield();
 
 	bool getGodMode() const { return godMode; }

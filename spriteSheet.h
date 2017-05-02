@@ -1,8 +1,8 @@
 #ifndef __UNPACK_H__
 #define __UNPACK_H__
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_surface.h>
+#include <SDL.h>
+#include <SDL_surface.h>
 #include <SDL2/SDL_image.h>
 
 //Use:

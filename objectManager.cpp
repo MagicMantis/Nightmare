@@ -12,10 +12,12 @@
 #include "viewport.h"
 
 ObjectManager& ObjectManager::getInstance() {
-  int gridWidth = Gamedata::getInstance().getXmlInt("grid/width");
-  int gridHeight = Gamedata::getInstance().getXmlInt("grid/height");
-  static ObjectManager objectManager(gridWidth, gridHeight);
-  return objectManager;
+  if (objectManager == nullptr) {
+  	int gridWidth = Gamedata::getInstance().getXmlInt("grid/width");
+  	int gridHeight = Gamedata::getInstance().getXmlInt("grid/height");
+  	objectManager = new ObjectManager(gridWidth, gridHeight);
+  }
+  return *objectManager;
 }
 
 void ObjectManager::initObjects() {

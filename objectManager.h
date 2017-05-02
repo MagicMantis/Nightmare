@@ -19,12 +19,13 @@ public:
 	ObjectManager& operator=(const ObjectManager&) = delete;
 	~ObjectManager();
 
+	void resetObjects(); //recreate object manager
+
 	void addObject(Drawable*, bool = false); //add an object 
 	void removeObject(Drawable*); //remove an object from being updated and drawn
 	void initObjects(); //generate all objects in the scene
 	void updateObjects(Uint32 ticks); //update all objects
 	void drawObjects() const; //draw all objects
-	void resetObjects(); //remove all objects from game
 
 	int getInstanceCount() const { return gameObjects.size(); }
 	Drawable* getObject(int index) const;
@@ -42,6 +43,7 @@ public:
 	void storePlayer(Player *p) { playerStore = p; }
 private:
 	ObjectManager(int w, int h);
+	static ObjectManager *objectManager;
 	std::list<Drawable*> gameObjects;
 	std::unordered_map<std::string, std::list<Drawable*>*> instanceSets;
 	std::list<Drawable*> removeList;
@@ -51,5 +53,7 @@ private:
 	int gridWidth, gridHeight;
 	Player *playerStore;
 };
+
+ObjectManager* ObjectManager::objectManager = nullptr;
 
 #endif
